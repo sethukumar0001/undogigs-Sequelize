@@ -1,8 +1,11 @@
+
+//this.route.navigate
+
 import React,{Component} from 'react';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../Css/Home.css';
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../Css/Login.css'
 
 
@@ -25,17 +28,41 @@ export default class Login extends Component {
 		e.preventDefault();
 
 const data=this.state;
-const response= await fetch('http://localhost:4000/backend/login',{
-	method:'POST',
-	headers:{
-		'Content-Type':'application/json',
-	},
-	body:JSON.stringify({data}),
-});
-const body = await response.text();
-this.setState({response:body});
-console.log(data);
+// const response= await fetch('http://localhost:4000/backend/login',{
+// 	method:'POST',
+// 	headers:{
+// 		'Content-Type':'application/json',
+// 	},
+// 	body:JSON.stringify({data}),
+// });
+// const body = await response.text();
+// this.setState({response:body});
+// console.log(data);
+
+fetch('http://localhost:4000/backend/login', {
+	method: 'POST',
+	body: JSON.stringify({
+		data
+	}),
+	headers: {
+		'Content-Type':'application/json'
 	}
+})
+.then(res => {
+	if (res.status === 200) {
+	alert("Login success");
+	} else {
+		const error = new Error(res.error);
+		throw error;
+	}
+})
+.catch(err => {
+	console.error(err);
+	alert('Error logging in please try again');
+});
+}
+
+	
   render(){
 		console.log(this.state.response);
   return (
