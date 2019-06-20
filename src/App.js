@@ -14,6 +14,9 @@ class App extends Component {
   render() {
     return (
       <Router>
+
+
+      {/* sethu */}
 <Switch>     
   <Route exact path='/' component={Home}></Route>
   <Route  path='/login' component={Login}></Route>
