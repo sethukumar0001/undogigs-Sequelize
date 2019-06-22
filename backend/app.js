@@ -4,7 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var jwt=require('jsonwebtoken')
 
+var config=require('./routes/config');
+let middleware=require('./routes/middleware');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var backendRouter = require('./routes/backend');
