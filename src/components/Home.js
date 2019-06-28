@@ -1,12 +1,24 @@
 import React,{Component} from 'react';
  import "bootstrap/dist/css/bootstrap.min.css";
 import '../Css/Home.css';
+import AuthHelperMethods from '../Authentication/AuthHelperMethods';
+import withAuth from '../Authentication/withAuth';
+
 import {  Link } from "react-router-dom";
 var { SocialIcon } = require('react-social-icons');
-export default class Home extends Component {
-  
+
+
+class Home extends Component {
+ 
+  Auth = new AuthHelperMethods();
+ _handleLogout = () =>{
+  this.Auth.logout()
+  this.props.history.replace('/login');
+}
   render(){
   return (
+
+
 <div className="Home" > {/* home div started */}
 <nav className="navbar navbar-expand-sm bg-light  "> {/*nav tag opened  */}
 <Link to="/" className="navbar-brand" > {/* navbar-brand started */}
@@ -25,6 +37,9 @@ export default class Home extends Component {
     </li> {/* li3 closed */}
   </ul>  {/*ul closed  */}
 </nav> 
+<div className="bottom-section">
+              <button onClick={this._handleLogout}>LOGOUT</button>
+            </div>
 
 <div className="fluid-container">
 <img  className="img-responsive image-container" src={require('./Images/Homeimg1.png')} alt="logo" width='100%'  ></img>
@@ -86,3 +101,4 @@ export default class Home extends Component {
 }
 }
 
+export default withAuth(Home);

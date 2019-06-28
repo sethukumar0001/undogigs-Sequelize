@@ -5,7 +5,6 @@ import AuthHelperMethods from './AuthHelperMethods';
 export default function withAuth(AuthComponent) {
     
     const Auth = new AuthHelperMethods();
-
     return class AuthWrapped extends Component {
        
         state = {

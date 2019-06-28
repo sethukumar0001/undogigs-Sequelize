@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../Css/register.css';
 
+import AuthHelperMethods from '../Authentication/AuthHelperMethods';
+
+
 class Register extends Component {
+
+	Auth = new AuthHelperMethods();
+
 	constructor(props) {
 		super(props);
 
@@ -12,8 +18,7 @@ class Register extends Component {
 			email: '',
 			mobilenumber:'',
 			password: '',
-			selectedValue:'',
-			msg:''
+			selectedValue:''
 		};
 
 		this.displayLogin = this.displayLogin.bind(this);
@@ -43,37 +48,51 @@ class Register extends Component {
 		e.preventDefault();
 
 const data=this.state;
-const response= await fetch('http://localhost:4000/backend/add',{
-	method:'POST',
-	headers:{
-		'Content-Type':'application/json',
-	},
-	body:JSON.stringify({data}),
-});
-const body = await response.text();
-this.setState({response:body});
-console.log(data);
-
-
-
-
-// fetch('http://localhost:4000/backend/add', {
-// 	method: 'POST',
-// 	headers: {'Content-Type': 'application/json'},
-// 	body: JSON.stringify({data})
-// }).then(function(response) {
-// 	if (response.status >= 400) {
-// 		throw new Error("Bad response from server");
-// 	}
-// 	return response.json();
-// }).then(function(data) {
-// 	console.log(data)    
-// 	if(data == "success"){
-// 		 this.setState({msg : "Thanks for registering"});  
-// 	}
-// }).catch(function(err) {
-// 	console.log(err)
+// const response= await fetch('http://localhost:4000/backend/add',{
+// 	method:'POST',
+// 	headers:{
+// 		'Content-Type':'application/json',
+// 	},
+// 	body:JSON.stringify({data}),
 // });
+// const body = await response.text();
+// this.setState({response:body});
+// console.log(data);
+// const user={
+// 	firstname:this.state.firstname,
+// 	lastname:this.state.lastname,
+// 	email:this.state.email,
+// 	mobilenumber:this.state.mobilenumber,
+// 	password:this.state.password,
+// 	category:this.state.selectedValue
+// }
+// axios.post('http://localhost:4000/backend/add',{
+// 	data
+// }).then((data)=>{
+// 	console.log(data);
+// 	this.props.history.replace('/login');
+// })
+
+
+
+fetch('http://localhost:4000/backend/add', {
+	method: 'POST',
+	headers: {'Content-Type': 'application/json'},
+	body: JSON.stringify({data})
+}).then(function(response) {
+	if (response.status >= 400) {
+		throw new Error("Bad response from server");
+	}
+	return response.json();
+}).then(function(data) {
+	console.log(data)    
+	if(data){
+		 alert("Thanks for registering");  
+	}
+	this.props.history.push('/undoguyshome');
+}).catch(function(err) {
+	console.log(err)
+});
 
 
 
@@ -82,6 +101,12 @@ console.log(data);
 		this.setState({
 			selectedOption: changeEvent.target.value
 		});
+	}
+	componentDidMount(){
+		console.log(this.Auth.loggedIn());
+		if(this.Auth.loggedIn()){
+			this.props.history.push('/undoguyshome')
+		}
 	}
 
 	render() {

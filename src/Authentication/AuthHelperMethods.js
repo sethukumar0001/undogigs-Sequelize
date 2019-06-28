@@ -4,17 +4,16 @@ export default class AuthHelperMethods {
     
     // Initializing important variables
 
-    login = (username, password) => {
+    login = (email, password) => {
         
         // Get a token from api server using the fetch api
-        return this.fetch(`/log-in`, {
+        return this.fetch('http://localhost:4000/backend/login', {
             method: 'POST',
             body: JSON.stringify({
-                username,
+                email,
                 password
             })
         }).then(res => {
-            
             this.setToken(res.token) // Setting the token in localStorage
             return Promise.resolve(res);
         })

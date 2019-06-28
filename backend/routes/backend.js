@@ -1,6 +1,18 @@
+
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const exjwt = require('express-jwt');
+var app = express();
+
 var express = require('express');
 var router = express.Router();
-var con = require(__dirname + '/../bin/db.js');
+var db = require('../models');
+var PORT = process.env.PORT || '5000';
+
 
 router.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -10,32 +22,61 @@ router.use(function (req, res, next) {
 });
 
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+
+const jwtMW = exjwt({
+  secret: 'super secret'
+});
+
 
 router.post('/add', (req, res) => {
     fname = req.body.data.firstname;
     lname = req.body.data.lastname;
     mno=req.body.data.mobilenumber;
     email = req.body.data.email;
-    psd = req.body.data.password;
+    password = req.body.data.password;
     radio=req.body.data.selectedValue;
     //category= req.body.data.category;
+console.log(req.body.data);
+//cconsole.log(req.data);
+console.log(fname)
 
-    data = {firstName:fname,lastName:lname,mobileNo:mno,email:email,password:psd,category:radio}
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, function (err, hash) {
+      db.userDetails.create({
+        firstname:fname,
+        lastname:lname,
+        mobilenumber:mno,
+        email:email,
+        password:hash,
+        category:radio,
+        
+      }).then((result) => {
+        console.log("User created: ", result);
+        res.json("user created!");
+      })
+    });
 
-    console.log(data);
-    con.query("INSERT INTO userDetails SET ? ", data, function (err, rows) {
-      if (!err) 
-        res.status(200).json([{
-          status: 'success',
-          insertID: rows.insertId
-        }])   
-      else
-        res.status(502).json([{
-          status: 'failed',
-          errMsg: 'Error while inserting data.'
-        }])
-    })
-  })
+
+  //   data = {firstName:fname,lastName:lname,mobileNo:mno,email:email,password:psd,category:radio}
+
+  //   console.log(data);
+  //   con.query("INSERT INTO userDetails SET ? ", data, function (err, rows) {
+  //     if (!err) 
+  //       res.status(200).json([{
+  //         status: 'success',
+  //         insertID: rows.insertId
+  //       }])   
+  //     else
+  //       res.status(502).json([{
+  //         status: 'failed',
+  //         errMsg: 'Error while inserting data.'
+  //       }])
+  //   })
+   })
 
 /* GET users listing. */
 router.get('/select', function (req, res, next) {
@@ -57,73 +98,60 @@ router.get('/select', function (req, res, next) {
   });
 
 // se
-  router.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  console.log("User submitted: ", email, password);
 
-    email = req.body.data.email;
-    psd = req.body.data.password;
-
-
-    data = {email:email,password:psd}
-
-    console.log(data);
-    con.query("SELECT * FROM userDetails WHERE email='"+email+"' AND password = '"+psd+"'", function (err, rows) {
-      if (!err) 
-        res.status(200).json([{ 
-          status: 'success',
-          insertID: rows.insertId
-        }])
-       
-      else
-        res.status(502).json([{
-          status: 'failed',
-          errMsg: 'Error while login.'
-        }])
+  db.userDetails.findOne(
+    {
+      where: { email: email }
     })
-  })
+    .then((user) => {
+      console.log("User Found: ", user);
+      if (user === null) {
+        res.status(401).json({
+          sucess: false,
+          token: null,
+          err: 'Invalid Credentials'
+        });
+      }
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (result === true) {
+          console.log("Valid!");
 
+          let token = jwt.sign(
+            {
+              email: user.email
+            },
+            'super secret',
+            { expiresIn: 129600 }); // Signing the token
 
+          res.json({
+            sucess: true,
+            err: null,
+            token
+          });
+        }
+        else {
+          console.log("Entered Password and Hash do not match!");
+          res.status(401).json({
+            sucess: false,
+            token: null,
+            err: 'Entered Password and Hash do not match!'
+          });
+        }
+      });
+    })
+});
 
+router.get('/', jwtMW /* Using the express jwt MW here */, (req, res) => {
+  console.log("Web Token Checked.")
+  res.send('You are authenticated'); //Sending some response when authenticated
+});
 
-//   router.get('/login', function (req, res, next) {
-// const email =req.body.data.email;
-// const password = req.body.data.password;
-// console.log(email);
-// console.log(password);
-// alert(email)
-
-
-//     con.query('SELECT * FROM userDetails WHERE email = ?',[email], function (error, results, fields) {
-//       if (error) {
-//          console.log("error ocurred",error);
-//         res.send({
-//           "code":400,
-//           "failed":"error ocurred"
-//         })
-//       }else{
-//          console.log('The solution is: ', results);
-//         if(results.length >0){
-//           if([0].password == password){
-//           res.send({
-//             "code":200,
-//             "success":"login sucessfull"
-//               });
-        
-//           }
-//           else{
-//             res.send({
-//               "code":204,
-//               "success":"Email and password does not match"
-//                 });
-//           }
-//         }
-//         else{
-//           res.send({
-//             "code":204,
-//             "success":"Email does not exits"
-//               });
-//         }
-//       }
-//     });
-//   })
-
-  module.exports = router;
+db.sequelize.sync().then(() => {
+  app.listen(PORT, function () {
+    console.log("App listening on PORT " + PORT);
+  });
+})
+module.exports = router;

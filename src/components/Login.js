@@ -6,11 +6,17 @@ import React,{Component} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../Css/Home.css';
 import { Link } from "react-router-dom";
+import AuthHelperMethods from '../Authentication/AuthHelperMethods';
+
 import '../Css/Login.css'
 
 
 
 export default class Login extends Component {
+
+	Auth = new AuthHelperMethods();
+	
+
   constructor(props) {
 		super(props);
 
@@ -27,7 +33,7 @@ export default class Login extends Component {
 	{
 		e.preventDefault();
 
-const data=this.state;
+//const data=this.state;
 // const response= await fetch('http://localhost:4000/backend/login',{
 // 	method:'POST',
 // 	headers:{
@@ -39,35 +45,51 @@ const data=this.state;
 // this.setState({response:body});
 // console.log(data);
 
-fetch('http://localhost:4000/backend/login', {
-	method: 'POST',
-	body: JSON.stringify({
-		data
-	}),
-	headers: {
-		'Content-Type':'application/json'
+
+
+// fetch('http://localhost:4000/backend/login', {
+// 	method: 'POST',
+// 	body: JSON.stringify({
+// 		data
+// 	}),
+// 	headers: {
+// 		'Content-Type':'application/json'
+// 	}
+// })
+// .then(res => {
+// 	if (res.status === 200) {
+// 	alert("Login success");
+// 	} else {
+// 		const error = new Error(res.error);
+// 		throw error;
+// 	}
+// })
+// .catch(err => {
+// 	console.error(err);
+// 	alert('Error logging in please try again');
+// });
+
+this.Auth.login(this.state.email,this.state.password)
+.then(res =>{
+	if(!res){
+		return alert("sorry credentials does not exist");
 	}
+	this.props.history.replace('/undoguyshome');
 })
-.then(res => {
-	if (res.status === 200) {
-	alert("Login success");
-	} else {
-		const error = new Error(res.error);
-		throw error;
-	}
+.catch(err =>{
+	alert(err)
 })
-.catch(err => {
-	console.error(err);
-	alert('Error logging in please try again');
-});
-}
+ }
+
+ componentWillMount(){
+	 if(this.Auth.loggedIn())
+	 this.props.history.replace('/undoguyshome');
+ }
 
 	
   render(){
 		console.log(this.state.response);
   return (
-
-
 
 <div className="Login" > {/* login div started */}
 <nav className="navbar navbar-expand-sm bg-light  "> {/*nav tag opened  */}
