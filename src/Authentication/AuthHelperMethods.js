@@ -3,7 +3,7 @@ import decode from 'jwt-decode';
 export default class AuthHelperMethods {
     
     // Initializing important variables
-
+    
     login = (email, password) => {
         
         // Get a token from api server using the fetch api
@@ -60,6 +60,7 @@ export default class AuthHelperMethods {
         // Using jwt-decode npm package to decode the token
         let answer = decode(this.getToken());
         console.log("Recieved answer!");
+        console.log(answer);
         return answer;
     }
 

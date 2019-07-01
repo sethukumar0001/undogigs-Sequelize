@@ -1,6 +1,4 @@
 
-//this.route.navigate
-
 import React,{Component} from 'react';
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -45,8 +43,6 @@ export default class Login extends Component {
 // this.setState({response:body});
 // console.log(data);
 
-
-
 // fetch('http://localhost:4000/backend/login', {
 // 	method: 'POST',
 // 	body: JSON.stringify({
@@ -90,8 +86,8 @@ this.Auth.login(this.state.email,this.state.password)
   render(){
 		console.log(this.state.response);
   return (
-
-<div className="Login" > {/* login div started */}
+<center>
+	<div className="Login"> {/* login div started */}
 <nav className="navbar navbar-expand-sm bg-light  "> {/*nav tag opened  */}
 
 <Link to="/" className="navbar-brand" > {/* navbar-brand started */}
@@ -101,7 +97,7 @@ this.Auth.login(this.state.email,this.state.password)
   </Link> {/* navbar-brand closed */}
   
 </nav> {/* navbar closed */}
-
+<div className="sethu">
 <div className="row  ml-auto">
     <div className=" container col-lg-6" >
 
@@ -125,23 +121,30 @@ className="mb-3 mr-3  form-control "
 							name="password"
 							className="mb-3 mr-3 form-control"
 						/>
+						
 						</div>
 					
-        	<input type="submit" value="Login"  className="bg-primary mb-3 mr-3  "/>
-        <p className="ml-3" > <span>Not Yet Registered? </span></p>
-         
-        <Link to="/register">	<button type="submit" value="Signup"  className="ml-3 btn btn btn-primary" >	Sign Up</button></Link>
+        	<input type="submit" value="Login"  className="bg-primary mb-3 mr-3 "/>
+					<ul className="navbar-nav ml-auto"> {/* nav ul started */}
+    <li className="nav-item "> {/* li 1 started */}
+      <p className="nav-link text-dark" >Not yet registerd?
+
+      <Link to="/register" >Signup</Link> </p> 
+    </li> 
+	</ul>
 				</form>
+				
 				</div>
 		
 				<div className="col-lg-6" >
 
-<img src={require('./Images/login.png')} alt="logo"  width="700"height="100%" ></img>
+				<img  src={require('./Images/login.png')} alt="logo" width="85%" height="85%" ></img>
+</div>
 </div>
 </div>
 </div> 
 
-
+</center>
 );
 }
 }

@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/register";
 import UndoguysHome from "./components/unguyshome";
+import Profile from "../src/components/profile"
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
   <Route  path='/login' component={Login}></Route>
   <Route  path='/register' component={Register}></Route>
   <Route  path='/undoguyshome' component={UndoguysHome}></Route>
+  <Route path='/profile' component={Profile}></Route>
 </Switch>
       </Router>
     );

@@ -4,6 +4,7 @@ import '../Css/Home.css';
 import AuthHelperMethods from '../Authentication/AuthHelperMethods';
 import withAuth from '../Authentication/withAuth';
 
+
 import {  Link } from "react-router-dom";
 var { SocialIcon } = require('react-social-icons');
 
@@ -18,10 +19,9 @@ class Home extends Component {
   render(){
   return (
 
-
 <div className="Home" > {/* home div started */}
 <nav className="navbar navbar-expand-sm bg-light  "> {/*nav tag opened  */}
-<Link to="/" className="navbar-brand" > {/* navbar-brand started */}
+<Link to="/login" className="navbar-brand" > {/* navbar-brand started */}
     <img  className="img-responsive " src={require('./Images/Logo.png')} alt="logo" width='100%' height='80'>
   </img>
   </Link> {/* navbar-brand closed */}
@@ -29,17 +29,17 @@ class Home extends Component {
     <li className="nav-item "> {/* li 1 started */}
       <Link to="/"className="nav-link mr-3 " >How it works?</Link> 
     </li> {/* li 1 closed */}
-    <li className="nav-item "> {/* li2 started */}
-    <Link to="/login" className="nav-link mr-3" >Login</Link >
-    </li> {/* li2 closed */}
+
+
     <li className="nav-item "> {/*  li3 started*/}
-      <Link to="/register" className="nav-link mr-3" >Signup</Link> 
+    <button type="button" class="btn btn-info" onClick={this._handleLogout}>Logout</button>
     </li> {/* li3 closed */}
   </ul>  {/*ul closed  */}
-</nav> 
-<div className="bottom-section">
-              <button onClick={this._handleLogout}>LOGOUT</button>
+  <div className="bottom-section">
+             
             </div>
+</nav> 
+
 
 <div className="fluid-container">
 <img  className="img-responsive image-container" src={require('./Images/Homeimg1.png')} alt="logo" width='100%'  ></img>

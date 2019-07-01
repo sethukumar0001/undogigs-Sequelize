@@ -2,8 +2,18 @@ import React,{Component} from 'react';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../Css/guyshome.css';
+import AuthHelperMethods from '../Authentication/AuthHelperMethods';
+import withAuth from '../Authentication/withAuth';
+
 import {  Link } from "react-router-dom";
-export default class UndoguysHome extends Component {
+ class UndoguysHome extends Component {
+Auth = new AuthHelperMethods();
+
+_handleLogout = () => {
+  this.Auth.logout()
+  this.props.history.replace('/login');
+}
+
     render(){
     return (
         <div className="undoguyshome" >
@@ -20,16 +30,19 @@ export default class UndoguysHome extends Component {
       <Link to="/"  className="nav-link text-white " >My Gigs</Link> 
     </li> {/* li 1 closed */}
     <li className="nav-item mr-3 "> {/* li2 started */}
-    <Link to="/" className="nav-link text-white " target="_blank" >Profile</Link >
+    <Link to="/profile" className="nav-link text-white " >Profile</Link >
     </li> {/* li2 closed */}
     <li className="nav-item  mr-3"> {/*  li3 started*/}
       <Link to="/" className="nav-link text-white " >Messages</Link> 
 
     </li> {/* li3 closed */}
     <li className="nav-item  mr-3"> {/*  li4 started*/}
-  <button type="submit"><i class="fa fa-search"></i></button>
+  <button type="submit"><i className="fa fa-search"></i></button>
 
     </li> {/* li4 closed */}
+    <li className="nav-item "> {/*  li3 started*/}
+    <button type="button" class="btn btn-info" onClick={this._handleLogout}>Logout</button>
+    </li> {/* li3 closed */}
     
   </ul>  {/*ul closed  */}
   
@@ -40,4 +53,4 @@ export default class UndoguysHome extends Component {
         );
     }
     }
-    
+    export default withAuth(UndoguysHome);  

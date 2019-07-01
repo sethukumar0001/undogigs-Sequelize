@@ -28,7 +28,20 @@ module.exports = function(sequelize, DataTypes) {
         }, category: {
             type: DataTypes.STRING,
             allowNull: true
+        }, skills: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }, qualification: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }, experience: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }, location: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
+
     }, {
         freezeTableName: true
     });

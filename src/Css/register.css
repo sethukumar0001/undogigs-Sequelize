@@ -9,8 +9,15 @@
 }
 
 
-
-
+.radio {
+  margin: 0 10px 0 10px !important;
+}
+.label {
+  margin-left: 1px !important;
+}
+/* .images{
+  margin-top:10px
+} */
 
 input[type='text'] {
  
@@ -30,12 +37,13 @@ input[type='text'] {
     font-size: 16px;
     margin-bottom: 20px;
     border: none;
-    padding:15px 15px 15px 15px;
+    /* padding:15px 15px 15px 1opx; */
   
     border-radius: 30px;
     box-shadow: 2px 2px 2px 2px  #888888
   
   }
+
   
   input[type='submit'] {
    
@@ -61,4 +69,7 @@ input[type='text'] {
   .check {
     font-size: 16px;
   }
-  
+  .sethu{
+    color:red;
+    padding-top: 100px !important;
+   }

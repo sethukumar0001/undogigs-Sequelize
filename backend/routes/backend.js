@@ -33,6 +33,7 @@ const jwtMW = exjwt({
 
 
 router.post('/add', (req, res) => {
+
     fname = req.body.data.firstname;
     lname = req.body.data.lastname;
     mno=req.body.data.mobilenumber;
@@ -42,7 +43,7 @@ router.post('/add', (req, res) => {
     //category= req.body.data.category;
 console.log(req.body.data);
 //cconsole.log(req.data);
-console.log(fname)
+
 
     const saltRounds = 10;
     bcrypt.hash(password, saltRounds, function (err, hash) {
@@ -57,29 +58,45 @@ console.log(fname)
       }).then((result) => {
         console.log("User created: ", result);
         res.json("user created!");
+        
+        
       })
     });
 
+  })
 
-  //   data = {firstName:fname,lastName:lname,mobileNo:mno,email:email,password:psd,category:radio}
 
-  //   console.log(data);
-  //   con.query("INSERT INTO userDetails SET ? ", data, function (err, rows) {
-  //     if (!err) 
-  //       res.status(200).json([{
-  //         status: 'success',
-  //         insertID: rows.insertId
-  //       }])   
-  //     else
-  //       res.status(502).json([{
-  //         status: 'failed',
-  //         errMsg: 'Error while inserting data.'
-  //       }])
-  //   })
-   })
 
-/* GET users listing. */
-router.get('/select', function (req, res, next) {
+  router.post('/profile', (req, res) => {
+
+    
+    skills = req.body.data.skills;
+    qualification = req.body.data.qualification;
+    experience=req.body.data.experience;
+    location = req.body.data.location;
+
+    //const saltRounds = 10;
+    // bcrypt.hash(location, saltRounds, function (err, hash) {
+      db.userDetails.create({
+        skills:skills,
+        qualification:qualification,
+        experience:experience,
+        location:location,
+       
+        
+      }).then((result) => {
+        console.log("profile created: ", result);
+        res.json("profile updated!");
+        
+        
+      // })
+    });
+
+    });
+
+
+
+  router.get('/select', function (req, res, next) {
 
     con.query('SELECT * from userDetails ', function (err, rows, fields) {
       if (!err)
@@ -145,8 +162,8 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/', jwtMW /* Using the express jwt MW here */, (req, res) => {
-  console.log("Web Token Checked.")
-  res.send('You are authenticated'); //Sending some response when authenticated
+  console.log("Web Token Checked........jwt response")
+  res.send('You are authenticated........response'); //Sending some response when authenticated
 });
 
 db.sequelize.sync().then(() => {

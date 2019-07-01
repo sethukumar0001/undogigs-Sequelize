@@ -20,18 +20,12 @@ class Register extends Component {
 			mobilenumber:'',
 			password: '',
 			password1:'',
-      selectedValue:'',
-      fields: {},
-      errors: {}
+			selectedValue:'',
+			
 		};
 
 		this.displayLogin = this.displayLogin.bind(this);
-  }
-  
-  
-  
-
-
+	}
 	handleChange=(event)=> {
     console.log(event.target.value);
     this.setState({
@@ -51,22 +45,16 @@ class Register extends Component {
     event.preventDefault();
   }
 
-  validateField = (fieldName,fieldValue) =>{
-    let errorMessage;
-    this.state.validations[fieldName].forEach( (validation)=>{
-        errorMessage = validation(fieldValue);          
-        if(errorMessage){return}
-     });
-     this.setState({
-        error:{
-          ...this.state.error,
-          [fieldName]:errorMessage
-        }
-      })
- }
+
 
 	displayLogin =async (e) =>{
 		e.preventDefault();
+// var firstname=this.state.firstname;
+// var lastname=this.state.lastname;
+// var email=this.state.email;
+// var password=this.state.password;
+// var password1=this.state.password1;
+// var mobilenumber=this.state.mobilenumber;
 
 
 var password=this.state.password;
@@ -124,7 +112,8 @@ fetch('http://localhost:4000/backend/add', {
 	console.log(err)
 });
 
-		}
+	
+	}
 		else{
 			alert("Password is Not Matched");
 		}
